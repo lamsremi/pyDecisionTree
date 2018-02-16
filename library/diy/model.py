@@ -1,9 +1,10 @@
-"""
-This script is an implementation of decision tree model.
+"""This script is an implementation of decision tree model.
 
 Implementation of ID3 (Iterative Dichotomizer 3) algorithm
 
-Ref: https://en.wikipedia.org/wiki/ID3_algorithm
+Ref:
+* https://en.wikipedia.org/wiki/ID3_algorithm
+* https://www.youtube.com/watch?v=LDRbO9a6XPU
 """
 import numpy as np
 import pandas as pd

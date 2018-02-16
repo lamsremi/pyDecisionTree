@@ -1,6 +1,4 @@
-"""
-This module includes the common decorators used
-for the Bahamas project python script
+"""This module includes the common decorators used for development.
 """
 
 import time
@@ -8,7 +6,7 @@ import sys
 
 
 def debug_more(function):
-    """Debug more."""
+    """Debug with output and arguments."""
     def wrapper(*args):
         """Wrapper definition."""
         result = function(*args)
@@ -18,13 +16,13 @@ def debug_more(function):
 
 
 def debug(function):
-    """Debug."""
+    """Debug only with output."""
     def wrapper(*args, **kw):
         """Wrapper definition."""
         result = function(*args, **kw)
-        if isinstance(result, dict) or isinstance(result, list):
+        if isinstance(result, (dict, list)):
             print(('{0}() :\n'.format(function.__name__)))
-            print_dict(result)
+            print_well(result)
         else:
             print(('{0}() :\n {1}'.format(function.__name__, result)))
         return result
@@ -47,15 +45,15 @@ def timeit(method):
     return timed
 
 
-def print_dict(obj, nested_level=0, output=sys.stdout):
-    """Print dictionnary."""
+def print_well(obj, nested_level=0, output=sys.stdout):
+    """Print a dictionnary properly."""
     spacing = '   '
     if isinstance(obj, dict):
         print('%s{' % ((nested_level) * spacing), file=output)
         for key, value in list(obj.items()):
             if hasattr(value, '__iter__'):
                 print('%s%s:' % ((nested_level + 1) * spacing, key), file=output)
-                print_dict(value, nested_level + 1, output)
+                print_well(value, nested_level + 1, output)
             else:
                 print('%s%s: %s' % ((nested_level + 1) * spacing, key, value), file=output)
         print('%s}' % (nested_level * spacing), file=output)
@@ -63,7 +61,7 @@ def print_dict(obj, nested_level=0, output=sys.stdout):
         print('%s[' % ((nested_level) * spacing), file=output)
         for value in obj:
             if hasattr(value, '__iter__'):
-                print_dict(value, nested_level + 1, output)
+                print_well(value, nested_level + 1, output)
             else:
                 print('%s%s' % ((nested_level + 1) * spacing, value), file=output)
         print('%s]' % ((nested_level) * spacing), file=output)
