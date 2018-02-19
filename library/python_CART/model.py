@@ -6,6 +6,8 @@ in Machine Learning Recipes #8.
 Ref:
 * https://www.youtube.com/watch?v=LDRbO9a6XPU
 """
+import os
+import pickle
 
 class Model():
     """Decision tree model
@@ -13,8 +15,11 @@ class Model():
 
     def __init__(self):
         """Initialize an instance.
+        Attributes:
+            _tree (Decision node Object)
         """
         self._tree = None
+        self._params_path = "params/"
 
     def predict(self, inputs_data=None):
         """Classify inputs.
@@ -42,11 +47,21 @@ class Model():
     def persist_parameters(self, model_version):
         """Store the parameters of a version of model.
         """
+        version_path = self._params_path + model_version
+        # Create folder
+        if not os.path.exists(version_path):
+            os.mkdir(version_path)
+        # Dump into a pickle
+        with open(version_path + "/tree.pkl","wb") as handle:
+            pickle.dump(self._tree, handle)
 
     def load_parameters(self, model_version):
         """Load the parameters of a version of model.
         """
-
+        version_path = self._params_path + model_version
+        # Load the pickle
+        with open(version_path + "/tree.pkl","rb") as handle:
+            self._tree = pickle.load(handle)
 
 def classify(row, node):
     """See the 'rules of recursion' above."""
@@ -280,33 +295,38 @@ def print_tree(node, spacing=""):
     print_tree(node.false_branch, spacing + "  ")
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    my_model = Model()
+#     my_model = Model()
 
-    train_data = [
-        ['Green', 3, 'Apple'],
-        ['Yellow', 3, 'Apple'],
-        ['Red', 1, 'Grape'],
-        ['Red', 1, 'Grape'],
-        ['Yellow', 3, 'Lemon'],
-    ]
+#     train_data = [
+#         ['Green', 3, 'Apple'],
+#         ['Yellow', 3, 'Apple'],
+#         ['Red', 1, 'Grape'],
+#         ['Red', 1, 'Grape'],
+#         ['Yellow', 3, 'Lemon'],
+#     ]
 
-    header = ["color", "diameter", "label"]
+#     header = ["color", "diameter", "label"]
 
-    my_model.fit(train_data)
+#     my_model.fit(train_data)
 
-    print_tree(my_model._tree)
+#     print_tree(my_model._tree)
 
-    testing_data = [
-        ['Green', 3, 'Apple'],
-        ['Yellow', 4, 'Apple'],
-        ['Red', 2, 'Grape'],
-        ['Red', 1, 'Grape'],
-        ['Yellow', 3, 'Lemon'],
-    ]
+#     my_model.persist_parameters("X")
 
-    prediction_data = my_model.predict(testing_data)
+#     testing_data = [
+#         ['Green', 3, 'Apple'],
+#         ['Yellow', 4, 'Apple'],
+#         ['Red', 2, 'Grape'],
+#         ['Red', 1, 'Grape'],
+#         ['Yellow', 3, 'Lemon'],
+#     ]
 
-    print(prediction_data)
+#     my_loaded_model = Model()
 
+#     my_loaded_model.load_parameters("X")
+
+#     prediction_data = my_loaded_model.predict(testing_data)
+
+#     print(prediction_data)
