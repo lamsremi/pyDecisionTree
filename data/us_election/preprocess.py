@@ -40,9 +40,10 @@ def main():
     # Study transformed data
     study_data(data_df, data_type="categorical")
     # Format the data
-    train_data = format_data(data_df)
+    train_data, header = format_data(data_df)
     # Store the data
     store(train_data, "data/us_election/data.pkl")
+    store(header, "data/us_election/header.pkl")
 
 
 def load_raw_data(path_raw_data):
@@ -141,7 +142,8 @@ def format_data(data_df):
     train_data = []
     for row in data_df.itertuples():
         train_data.append([value for value in row[1:]])
-    return train_data
+    header = list(data_df.columns)
+    return train_data, header
 
 
 def store(train_data, path_preprocessed_data):

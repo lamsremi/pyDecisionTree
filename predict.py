@@ -2,11 +2,12 @@
 
 This module is used for performing a prediction.
 """
+import pickle
 import importlib
 
 import tools
 
-# @tools.debug
+@tools.debug
 def main(inputs_data=None,
          model_type=None,
          model_version=None,
@@ -56,8 +57,13 @@ def initialize_model(model_type):
 
 
 # To use only for development
-# if __name__ == '__main__':
-#     main(inputs_data=[],
-#          model_type="sum_plus_x",
-#          model_version="X",
-#          model=None)
+if __name__ == '__main__':
+
+    with open("data/us_election/data.pkl", "rb") as handle:
+        inputs_data = [row[:-1] for row in pickle.load(handle)][0:5]
+    for s in inputs_data:
+        print(s)
+    main(inputs_data=inputs_data,
+         model_type="python_CART",
+         model_version="us_election",
+         model=None)

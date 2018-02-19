@@ -19,6 +19,7 @@ class Model():
             _tree (Decision node Object)
         """
         self._tree = None
+        self._header = None
         self._params_path = "library/python_CART/params/"
 
     def predict(self, inputs_data=None):
@@ -42,7 +43,9 @@ class Model():
         Args:
             train_data (list): inputs data.
         """
-        self._tree = build_tree(train_data, header)
+        self._header = header
+        self._tree = build_tree(train_data, self._header)
+
 
     def persist_parameters(self, model_version):
         """Store the parameters of a version of model.
@@ -51,18 +54,24 @@ class Model():
         # Create folder
         if not os.path.exists(version_path):
             os.mkdir(version_path)
-        # Dump into a pickle
+        # Store the tree
         with open(version_path + "/tree.pkl","wb") as handle:
             pickle.dump(self._tree, handle)
+        # Store the header
+        with open(version_path + "/header.pkl","wb") as handle:
+            pickle.dump(self._header, handle)
 
     def load_parameters(self, model_version):
         """Load the parameters of a version of model.
         """
         if model_version is not None:
             version_path = self._params_path + model_version
-            # Load the pickle
+            # Load the tree
             with open(version_path + "/tree.pkl","rb") as handle:
                 self._tree = pickle.load(handle)
+            # Load the header
+            with open(version_path + "/header.pkl","rb") as handle:
+                self._header = pickle.load(handle)
 
     def display_tree(self):
         """Dispay a tree."""

@@ -24,10 +24,9 @@ The implemented model is a decision tree classifier with the following attribute
 
 ## Motivation
 
-The purposes of this exercice are to :
-* gain a better understanding on how does decision tree work.
-* practice python programming.
-* practice scikit-learn framework implementation.
+The purpose of this exercice is to gain a better understanding on how decision tree are built.
+
+It is also a valuable exercice to practice programming skills. 2 important python concepts are used in this implementation : class (decision node, leaf and question) for modeling the tree and recursion for building it.
 
 ## Code structure
 
@@ -40,7 +39,8 @@ pyLogisticRegression
 │   └- us_election/
 │
 ├- library/
-│   ├- diy/
+│   ├- python_CART/
+│   ├- python_ID3/
 │   └- scikit_learn/
 │
 ├- performance/

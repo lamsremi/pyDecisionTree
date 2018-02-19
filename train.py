@@ -42,7 +42,7 @@ def main(train_data=None,
     model.load_parameters(model_version=start_version)
 
     # Fit the model
-    model.fit(train_data=train_data[0:100], header=header)
+    model.fit(train_data=train_data[0:60], header=header)
 
     # Persist the parameters of the model
     model.persist_parameters(model_version=end_version)
@@ -60,6 +60,7 @@ def load_train_data(dataset_name):
     Return:
         train_data (iterable type) : the training data. It can be a pandas DataFrame or
         a list of dictionnaries, or a numpy array.
+        header
     Note:
         a dataset is defined by his "dataset_name" name which is the name
         of the folder in data directory.
@@ -68,16 +69,8 @@ def load_train_data(dataset_name):
     with open("data/{}/data.pkl".format(dataset_name), "rb") as handle:
         train_data = pickle.load(handle)
     # Load header
-    header = ["popul",
-              "TVnews",
-              "selfLR",
-              "ClinLR",
-              "DoleLR",
-              "PID",
-              "age",
-              "educ",
-              "income",
-              "vote"]
+    with open("data/{}/header.pkl".format(dataset_name), "rb") as handle:
+        header = pickle.load(handle)
     # Return the training data
     return train_data, header
 
@@ -106,4 +99,4 @@ if __name__ == '__main__':
          dataset_name="us_election",
          model_type="python_CART",
          start_version=None,
-         end_version="X")
+         end_version="us_election")
