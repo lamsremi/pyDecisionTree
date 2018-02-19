@@ -19,26 +19,30 @@ Descriptions:
     * income
     * vote
 """
+import pickle
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
 pd.set_option('display.width', 800)
 
 
-def main(path_raw_data, path_preprocessed_data=None):
+def main():
     """
     Preprocess the data.
     """
     # Load the raw data
-    raw_data_df = load_raw_data(path_raw_data)
+    raw_data_df = load_raw_data("data/us_election/raw_data/data.csv")
     # Study data
-    # study_data(raw_data_df, data_type="numerical")
+    study_data(raw_data_df, data_type="numerical")
     # Transform the data
     data_df = process(raw_data_df)
     # Study transformed data
-    # study_data(data_df, data_type="categorical")
+    study_data(data_df, data_type="categorical")
+    # Format the data
+    train_data = format_data(data_df)
     # Store the data
-    store(data_df, path_preprocessed_data)
+    store(train_data, "data/us_election/data.pkl")
 
 
 def load_raw_data(path_raw_data):
@@ -63,7 +67,7 @@ def study_data(data_df, data_type):
     print("- missing values :\n{}\n".format(data_df.isnull().sum()))
     if data_type == "numerical":
         # Display value distribution
-        display_histogram(data_df)
+        # display_histogram(data_df)
         # Extreme values
         print(" - minimum values :\n{}\n".format(data_df.min()))
         print(" - maximum values :\n{}\n".format(data_df.max()))
@@ -79,7 +83,7 @@ def display_histogram(data_df):
     plt.figure()
     for attribute in list(data_df.columns):
         data_df[["{}".format(attribute)]].plot.hist(bins=20)
-        plt.savefig("raw_data/histogram_{}.png".format(attribute))
+        plt.savefig("data/us_election/raw_data/histogram_{}.png".format(attribute))
 
 
 def process(raw_data_df):
@@ -131,12 +135,16 @@ def categorize(x_value, resolution):
     return output
 
 
-def store(data_df, path_preprocessed_data):
+def format_data(data_df):
+    """Format the data.
+    """
+    train_data = []
+    for row in data_df.itertuples():
+        train_data.append([value for value in row[1:]])
+    return train_data
+
+
+def store(train_data, path_preprocessed_data):
     """Store the processed data."""
-    data_df.to_csv(path_preprocessed_data)
-
-
-if __name__ == '__main__':
-    PATH_RAW_DATA = "raw_data/data.csv"
-    PATH_PREPROCESSED_DATA = "data.csv"
-    main(PATH_RAW_DATA, PATH_PREPROCESSED_DATA)
+    with open(path_preprocessed_data, "wb") as handle:
+        pickle.dump(train_data, handle)

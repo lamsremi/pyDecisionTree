@@ -19,7 +19,7 @@ class Model():
             _tree (Decision node Object)
         """
         self._tree = None
-        self._params_path = "params/"
+        self._params_path = "library/python_CART/params/"
 
     def predict(self, inputs_data=None):
         """Classify inputs.
@@ -37,12 +37,12 @@ class Model():
             # outputs_data.append(predictions)
         return outputs_data
 
-    def fit(self, train_data):
+    def fit(self, train_data, header):
         """Build the tree.
         Args:
             train_data (list): inputs data.
         """
-        self._tree = build_tree(train_data)
+        self._tree = build_tree(train_data, header)
 
     def persist_parameters(self, model_version):
         """Store the parameters of a version of model.
@@ -58,10 +58,15 @@ class Model():
     def load_parameters(self, model_version):
         """Load the parameters of a version of model.
         """
-        version_path = self._params_path + model_version
-        # Load the pickle
-        with open(version_path + "/tree.pkl","rb") as handle:
-            self._tree = pickle.load(handle)
+        if model_version is not None:
+            version_path = self._params_path + model_version
+            # Load the pickle
+            with open(version_path + "/tree.pkl","rb") as handle:
+                self._tree = pickle.load(handle)
+
+    def display_tree(self):
+        """Dispay a tree."""
+        print_tree(self._tree, spacing="")
 
 def classify(row, node):
     """See the 'rules of recursion' above."""
@@ -79,7 +84,7 @@ def classify(row, node):
         return classify(row, node.false_branch)
 
 
-def build_tree(rows):
+def build_tree(rows, header):
     """Builds the tree.
     Rules of recursion: 1) Believe that it works. 2) Start by checking
     for the base case (no further information gain). 3) Prepare for
@@ -89,7 +94,7 @@ def build_tree(rows):
     # Try partitioing the dataset on each of the unique attribute,
     # calculate the information gain,
     # and return the question that produces the highest gain.
-    gain, question = find_best_split(rows)
+    gain, question = find_best_split(rows, header)
 
     # Base case: no further info gain
     # Since we can ask no further questions,
@@ -102,10 +107,10 @@ def build_tree(rows):
     true_rows, false_rows = partition(rows, question)
 
     # Recursively build the true branch.
-    true_branch = build_tree(true_rows)
+    true_branch = build_tree(true_rows, header)
 
     # Recursively build the false branch.
-    false_branch = build_tree(false_rows)
+    false_branch = build_tree(false_rows, header)
 
     # Return a Question node.
     # This records the best feature / value to ask at this point,
@@ -114,7 +119,7 @@ def build_tree(rows):
     return Decision_Node(question, true_branch, false_branch)
 
 
-def find_best_split(rows):
+def find_best_split(rows, header):
     """Find the best question to ask by iterating over every feature / value
     and calculating the information gain.
     Args:
@@ -134,7 +139,7 @@ def find_best_split(rows):
 
         for val in values:  # for each value
 
-            question = Question(col, val)
+            question = Question(col, val, header)
 
             # try splitting the dataset
             true_rows, false_rows = partition(rows, question)
@@ -228,9 +233,10 @@ class Question:
     question. See the demo below.
     """
 
-    def __init__(self, column, value):
+    def __init__(self, column, value, header):
         self.column = column
         self.value = value
+        self.header = header
 
     def match(self, example):
         # Compare the feature value in an example to the
@@ -248,7 +254,7 @@ class Question:
         if is_numeric(self.value):
             condition = ">="
         return "Is %s %s %s?" % (
-            header[self.column], condition, str(self.value))
+            self.header[self.column], condition, str(self.value))
 
 
 class Leaf:
@@ -309,7 +315,7 @@ def print_tree(node, spacing=""):
 
 #     header = ["color", "diameter", "label"]
 
-#     my_model.fit(train_data)
+#     my_model.fit(train_data, header)
 
 #     print_tree(my_model._tree)
 

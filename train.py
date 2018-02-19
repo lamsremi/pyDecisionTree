@@ -1,5 +1,6 @@
 """Training script for decision tree.
 """
+import pickle
 import importlib
 
 import tools
@@ -7,6 +8,7 @@ import tools
 
 # @tools.debug
 def main(train_data=None,
+         header = None,
          dataset_name=None,
          model_type=None,
          start_version=None,
@@ -29,9 +31,9 @@ def main(train_data=None,
         output (str): Different indication messages.
     """
     # If no data is provided
-    if train_data is None:
+    if train_data is None or header is None:
         # Load labaled data from a dataset
-        train_data = load_train_data(dataset_name)
+        train_data, header = load_train_data(dataset_name)
 
     # Initialize an instance of the class corresponding to the given type of model
     model = initialize_model(model_type)
@@ -40,11 +42,13 @@ def main(train_data=None,
     model.load_parameters(model_version=start_version)
 
     # Fit the model
-    model.fit(train_data=train_data)
+    model.fit(train_data=train_data[0:100], header=header)
 
     # Persist the parameters of the model
     model.persist_parameters(model_version=end_version)
 
+    # Display tree
+    model.display_tree()
 
 # @tools.debug
 def load_train_data(dataset_name):
@@ -60,30 +64,22 @@ def load_train_data(dataset_name):
         a dataset is defined by his "dataset_name" name which is the name
         of the folder in data directory.
     """
-    # Load data using pandas library into a DataFrame
-    data_df = pd.read_pickle("data/{}/data.pkl".format(dataset_name))
-    # Format the data into the required format of the fit model
-    train_data = format_data(data_df)
+    # Load data using pickle
+    with open("data/{}/data.pkl".format(dataset_name), "rb") as handle:
+        train_data = pickle.load(handle)
+    # Load header
+    header = ["popul",
+              "TVnews",
+              "selfLR",
+              "ClinLR",
+              "DoleLR",
+              "PID",
+              "age",
+              "educ",
+              "income",
+              "vote"]
     # Return the training data
-    return train_data
-
-
-# @tools.debug
-def format_data(data_df):
-    """Convert the data into the proper format_dataat.
-    Args:
-        data_df (DataFrame): table of the training data.
-    Return:
-        train_data (iterable type) : the training data. It can be a pandas DataFrame or
-        a list of dictionnaries, or a numpy array.
-    """
-    ## Example ##############################
-    # train_data = []
-    # for row in data_df.itertuples():
-    #     train_data.append([value for value in row[1:]])
-    #########################################
-    # Return the table
-    return train_data
+    return train_data, header
 
 
 def initialize_model(model_type):
@@ -104,10 +100,10 @@ def initialize_model(model_type):
 
 
 # To use only for development
-# if __name__ == '__main__':
-#     TRAIN_DATA = blabla
-#     main(train_data=TRAIN_DATA,
-#          dataset_name=None,
-#          model_type="diy",
-#          start_version=None,
-#          end_version="X")
+if __name__ == '__main__':
+    main(train_data=None,
+         header=None,
+         dataset_name="us_election",
+         model_type="python_CART",
+         start_version=None,
+         end_version="X")
