@@ -26,7 +26,7 @@ class TestSanity(unittest.TestCase):
         """
         train_data = []
         # Inputing the data
-        for model in ["diy", "scikit_learn"]:
+        for model in ["python_CART"]:
             train.main(train_data=train_data,
                        dataset_name=None,
                        model_type=model,
@@ -58,46 +58,3 @@ class TestSanity(unittest.TestCase):
                          model_type=model,
                          model_version="us_election",
                          model=None)
-
-    # def test_vanilla(self):
-    #     """Test the functionnalities of vanilla layer context.
-    #     """
-    #     # Input for train
-    #     train_input_fields = {
-    #         "train_data": [
-    #             {
-    #                 "id_data": "12dc",
-    #                 "input": [1, 2, 3],
-    #                 "output": [4]
-    #             }
-    #         ]
-    #     }
-    #     predict_input_fields = {
-    #         "predict_data": [
-    #             {
-    #                 "id_data": "string",
-    #                 "input": [1, 2, 3]
-    #             }
-    #         ]
-    #     }
-    #     # For each model
-    #     for model in ["sum_plus_x", "sum_minus_x"]:
-    #         # Train from scratch
-    #         vanilla.train_api(model_type=model,
-    #                           model_version="unittest",
-    #                           train_input_fields=train_input_fields)
-    #         # Update
-    #         vanilla.update_api(model_type=model,
-    #                            start_version="unittest",
-    #                            end_version="unittest",
-    #                            train_input_fields=train_input_fields)
-    #         # Predict
-    #         vanilla.predict_api(model_type=model,
-    #                             model_version="unittest",
-    #                             predict_input_fields=predict_input_fields)
-    #         # Read
-    #         vanilla.read_api(model_type=model,
-    #                          model_version="unittest")
-    #         # Delete
-    #         vanilla.delete_api(model_type=model,
-    #                            model_version="unittest")

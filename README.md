@@ -1,39 +1,35 @@
 # Decision Tree Implementations
 
-**Which questions to ask and when?**
 
 ## Introduction
 
-There are many types algorithms to build decision tree:
+
+This module includes different implementation of decision tree:
+* The first implementation uses scikit-learn framework.
+* The second one is a decision tree written in pure python and build using the CART algorithm.
+* The third one is a decision tree written in pure python and build using the ID3 algorithm.
+
+
+## Motivation
+
+The purpose of this exercice is to gain a better understanding on how decision tree are built. Decision Tree are still very popular because of their simplicity and interpretability.
+
+There are different families of algorithms to build decision tree:
 * ID3
 * C4.5
 * C5.0
 * CART (Classification and Regression Trees)
 
-They differ from "which questions to ask and when". (https://www.youtube.com/watch?v=LDRbO9a6XPU)
+They mainly differ from "which questions to ask and when". (https://www.youtube.com/watch?v=LDRbO9a6XPU)
 
-This module presents 2 ways of implementing a decision tree :
-* The first implementation uses scikit-learn framework.
-* The second one is coded from scratch.
-
-The implemented model is a decision tree classifier with the following attributes :
-* blabla
-* blabla
-* blabla
-
-
-## Motivation
-
-The purpose of this exercice is to gain a better understanding on how decision tree are built.
-
-It is also a valuable exercice to practice programming skills. 2 important python concepts are used in this implementation : class (decision node, leaf and question) for modeling the tree and recursion for building it.
+It is also a valuable exercice to practice programming skills. 2 important python concepts are used in these implementations : classes and objects (decision node, leaf and question) for modeling the tree and recursion for building it.
 
 ## Code structure
 
 The code is structured as follow :
 
 ```
-pyLogisticRegression
+pyDecisionTree
 │
 ├- data/
 │   └- us_election/
@@ -54,13 +50,13 @@ pyLogisticRegression
 ├- prepare.py
 ├- train.py
 │
-├- docs/
-│   └- Lect09.pdf
-│
 ├- .gitignore
 ├- README.md
 └- requirements.txt
 ```
+
+The models are in the folder **library**.
+
 
 ## Installation
 
