@@ -2,8 +2,6 @@
 """
 import importlib
 
-import pandas as pd
-
 import tools
 
 

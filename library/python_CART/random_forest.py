@@ -32,13 +32,18 @@ def unique_vals(rows, col):
 
 #######
 # Demo:
-# unique_vals(training_data, 0)
+# print(unique_vals(training_data, 0))
 # unique_vals(training_data, 1)
 #######
 
 
 def class_counts(rows):
-    """Counts the number of each type of example in a dataset."""
+    """Counts the number of each type of example in a dataset
+    Agrs:
+        rows (list): list of list of inputs.
+    Returns:
+        counts (dict): counts of labels.
+    """
     counts = {}  # a dictionary of label -> count.
     for row in rows:
         # in our dataset format, the label is always the last column
@@ -50,7 +55,7 @@ def class_counts(rows):
 
 #######
 # Demo:
-# class_counts(training_data)
+# print(class_counts(training_data))
 #######
 
 
@@ -100,11 +105,12 @@ class Question:
 # Let's write a question for a numeric attribute
 # Question(1, 3)
 # How about one for a categorical attribute
-# q = Question(0, 'Green')
+q = Question(1, 3)
 # Let's pick an example from the training set...
-# example = training_data[0]
+example = training_data[1]
+print(example)
 # ... and see if it matches the question
-# q.match(example)
+print(q.match(example))
 #######
 
 
@@ -218,7 +224,13 @@ def info_gain(left, right, current_uncertainty):
 
 def find_best_split(rows):
     """Find the best question to ask by iterating over every feature / value
-    and calculating the information gain."""
+    and calculating the information gain.
+    Args:
+        rows (list): list of records.
+    Return:
+        best_gain (float): the best gain.
+        best_question (Question): the best question to ask.
+    """
     best_gain = 0  # keep track of the best information gain
     best_question = None  # keep train of the feature / value that produced it
     current_uncertainty = gini(rows)

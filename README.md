@@ -1,7 +1,16 @@
 # Decision Tree Implementations
 
+**Which questions to ask and when?**
 
 ## Introduction
+
+There are many types algorithms to build decision tree:
+* ID3
+* C4.5
+* C5.0
+* CART (Classification and Regression Trees)
+
+They differ from "which questions to ask and when". (https://www.youtube.com/watch?v=LDRbO9a6XPU)
 
 This module presents 2 ways of implementing a decision tree :
 * The first implementation uses scikit-learn framework.
