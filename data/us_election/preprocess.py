@@ -34,11 +34,11 @@ def main():
     # Load the raw data
     raw_data_df = load_raw_data("data/us_election/raw_data/data.csv")
     # Study data
-    study_data(raw_data_df, data_type="numerical")
+    study_data(raw_data_df)
     # Transform the data
     data_df = process(raw_data_df)
     # Study transformed data
-    study_data(data_df, data_type="categorical")
+    study_data(data_df)
     # Format the data
     train_data, header = format_data(data_df)
     # Store the data
@@ -54,7 +54,7 @@ def load_raw_data(path_raw_data):
     return raw_data_df
 
 
-def study_data(data_df, data_type):
+def study_data(data_df):
     """
     Examine the data.
     """
@@ -66,18 +66,21 @@ def study_data(data_df, data_type):
     print("- types :\n{}\n".format(data_df.dtypes))
     # Missing values
     print("- missing values :\n{}\n".format(data_df.isnull().sum()))
-    if data_type == "numerical":
+    try:
         # Display value distribution
         # display_histogram(data_df)
         # Extreme values
         print(" - minimum values :\n{}\n".format(data_df.min()))
         print(" - maximum values :\n{}\n".format(data_df.max()))
-    elif data_type == "categorical":
+    except:
+        print("Some data might not be numerical to be able to get the min and max")
+    try:
         # Unique value
         print("- unique values :")
         for attribute in list(data_df.columns):
             print("  * {} : {}".format(attribute, data_df[attribute].unique()))
-
+    except:
+        print("impossible to get the list of unique values")
 
 def display_histogram(data_df):
     """Display historgram."""
@@ -95,6 +98,8 @@ def process(raw_data_df):
     data_df = categorize_frame(raw_data_df)
     # Convert output to string
     data_df["vote"] = data_df["vote"].apply(lambda x: str(x))
+    data_df["educ"] = data_df["educ"].apply(lambda x: float(x))
+    data_df["PID"] = data_df["PID"].apply(lambda x: float(x))
     return data_df
 
 
@@ -108,9 +113,7 @@ def categorize_frame(data_df):
         "selfLR": 3,
         "ClinLR": 3,
         "DoleLR": 3,
-        "PID": 2,
         "age": 30,
-        "educ": 3,
         "income": 10
     }
     for attribute, resolution in resolution_dict.items():

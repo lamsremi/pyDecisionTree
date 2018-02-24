@@ -7,14 +7,14 @@ import unittest
 import prepare
 import train
 import predict
-import version
-from context.vanilla import vanilla
 
+MODELS = ["python_CART", "python_ID3"]
 
 class TestSanity(unittest.TestCase):
     """Class to test the core module.
 
     """
+
     def test_prepare(self):
         """Test the prepare module.
         """
@@ -26,7 +26,7 @@ class TestSanity(unittest.TestCase):
         """
         train_data = []
         # Inputing the data
-        for model in ["python_CART"]:
+        for model in MODELS:
             train.main(train_data=train_data,
                        dataset_name=None,
                        model_type=model,
@@ -35,7 +35,7 @@ class TestSanity(unittest.TestCase):
 
         # Retrieving the data
         for dataset in ["us_election"]:
-            for model in ["diy", "scikit_learn"]:
+            for model in MODELS:
                 train.main(train_data=None,
                            dataset_name=dataset,
                            model_type=model,
@@ -46,7 +46,7 @@ class TestSanity(unittest.TestCase):
     def test_predict(self):
         """Test the prepare module.
         """
-        for model in ["diy", "scikit_learn"]:
+        for model in MODELS:
             # Train
             train.main(train_data=None,
                        dataset_name="us_election",

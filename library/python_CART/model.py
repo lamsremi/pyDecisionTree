@@ -75,7 +75,7 @@ class Model():
 
     def display_tree(self):
         """Dispay a tree."""
-        print_tree(self._tree, spacing="")
+        print_md_tree(self._tree, spacing="")
 
 def classify(row, node):
     """See the 'rules of recursion' above."""
@@ -310,6 +310,31 @@ def print_tree(node, spacing=""):
     print_tree(node.false_branch, spacing + "  ")
 
 
+def print_md_tree(node, spacing=""):
+    """World's most elegant tree printing function."""
+    # spacing
+    # print("spacing length : {}".format(len(spacing)))
+    # print("spacing value : '{}'".format(spacing))
+    # Base case: we've reached a leaf
+    if isinstance(node, Leaf):
+        spacing_pred = spacing[:-3]
+        print(spacing_pred + "└-> predict", node.predictions)
+        return
+    # Print the attribute
+    print(spacing + "{}".format(str(node.question).upper()))
+
+    # Mardowns
+    md, md_end = "├", "└"
+    md_line, md_empty = "│", " "
+
+    # Call this function recursively on the true branch
+    print(spacing + md + '- True:')
+    print_md_tree(node.true_branch, spacing + md_line + "     ")
+
+    # Call this function recursively on the false branch
+    print (spacing + md_end + '--> False:')
+    print_md_tree(node.false_branch, spacing + md_empty + "     ")
+
 # if __name__ == '__main__':
 
 #     my_model = Model()
@@ -331,11 +356,11 @@ def print_tree(node, spacing=""):
 #     my_model.persist_parameters("X")
 
 #     testing_data = [
-#         ['Green', 3, 'Apple'],
-#         ['Yellow', 4, 'Apple'],
-#         ['Red', 2, 'Grape'],
-#         ['Red', 1, 'Grape'],
-#         ['Yellow', 3, 'Lemon'],
+#         ['Green', 3],
+#         ['Yellow', 3],
+#         ['Red', 2],
+#         ['Red', 1],
+#         ['Yellow', 3],
 #     ]
 
 #     my_loaded_model = Model()

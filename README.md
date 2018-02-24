@@ -55,6 +55,7 @@ pyDecisionTree
 └- requirements.txt
 ```
 
+
 The models are in the folder **library**.
 
 
@@ -63,7 +64,7 @@ The models are in the folder **library**.
 To use the different implementations, you can directly clone the repository :
 
 ```
-$ git clone https://github.com/lamsremi/pyDecisionTreeID3.git
+$ git clone https://github.com/lamsremi/pyDecisionTree.git
 ```
 
 ### Using a virtual environment

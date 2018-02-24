@@ -8,7 +8,7 @@ import tools
 
 # @tools.debug
 def main(train_data=None,
-         header = None,
+         header=None,
          dataset_name=None,
          model_type=None,
          start_version=None,
@@ -42,7 +42,7 @@ def main(train_data=None,
     model.load_parameters(model_version=start_version)
 
     # Fit the model
-    model.fit(train_data=train_data[0:60], header=header)
+    model.fit(train_data=train_data[0:50], header=header)
 
     # Persist the parameters of the model
     model.persist_parameters(model_version=end_version)
@@ -94,9 +94,10 @@ def initialize_model(model_type):
 
 # To use only for development
 if __name__ == '__main__':
-    main(train_data=None,
-         header=None,
-         dataset_name="us_election",
-         model_type="python_CART",
-         start_version=None,
-         end_version="us_election")
+    for model in ["python_CART", "python_ID3"]:
+        main(train_data=None,
+             header=None,
+             dataset_name="us_election",
+             model_type=model,
+             start_version=None,
+             end_version="us_election")
