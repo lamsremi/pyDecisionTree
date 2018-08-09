@@ -108,6 +108,7 @@ def build_tree(rows, header):
     # Base case: no further info gain
     # Since we can ask no further questions,
     # we'll return a leaf.
+    # Base condition
     if gain == 0:
         return Leaf(rows)
 
